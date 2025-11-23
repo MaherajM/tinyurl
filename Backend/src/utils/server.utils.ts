@@ -14,7 +14,7 @@ function createServer() {
       app.use(bodyParser.urlencoded({ extended: true }));
       app.use(bodyParser.json());
 
-      app.get('/health', (req: Request, res: Response) => {
+      app.get('/healthz', (req: Request, res: Response) => {
         res.send({
           status: 'Alive',
           timestamp: new Date().toISOString(),
