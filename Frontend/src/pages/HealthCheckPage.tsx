@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getHealthCheck } from '../api';
 
 type HealthStatus = {
@@ -8,11 +8,6 @@ type HealthStatus = {
   message?: string;
 };
 
-/**
- * HealthCheckPage - System health monitoring
- *
- * Displays backend health status and connectivity
- */
 export default function HealthCheckPage() {
   const [health, setHealth] = useState<HealthStatus | null>(null);
   const [loading, setLoading] = useState(false);
@@ -51,36 +46,28 @@ export default function HealthCheckPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gray-50 p-4 sm:p-6">
       <div className="max-w-4xl mx-auto">
-        <div className="bg-white shadow rounded p-6">
-          <div className="flex items-center justify-between mb-6">
+        <div className="bg-white shadow rounded p-4 sm:p-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-3">
             <div>
-              <h1 className="text-2xl font-semibold mb-2">Health Check</h1>
-              <p className="text-sm text-gray-600">
+              <h1 className="text-xl sm:text-2xl font-semibold mb-2">Health Check</h1>
+              <p className="text-xs sm:text-sm text-gray-600">
                 Monitor backend API status and connectivity
               </p>
             </div>
-            {/* <button
-              onClick={checkHealth}
-              disabled={loading}
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-60"
-            >
-              {loading ? 'Checking...' : 'Refresh'}
-            </button> */}
           </div>
 
-          {/* Status Card */}
-          <div className={`border rounded-lg p-6 ${getStatusBgColor()}`}>
+          <div className={`border rounded-lg p-4 sm:p-6 ${getStatusBgColor()}`}>
             <div className="flex items-center gap-3 mb-4">
-              <div className="text-3xl">
+              <div className="text-2xl sm:text-3xl">
                 {error ? '❌' : health?.status === 'ok' || health?.status === 'healthy' ? '✅' : '⚠️'}
               </div>
               <div>
-                <h2 className={`text-xl font-semibold ${getStatusColor()}`}>
+                <h2 className={`text-lg sm:text-xl font-semibold ${getStatusColor()}`}>
                   {error ? 'Unhealthy' : health?.status?.toUpperCase() || 'Unknown'}
                 </h2>
-                <p className="text-sm text-gray-600">
+                <p className="text-xs sm:text-sm text-gray-600">
                   {lastChecked
                     ? `Last checked: ${lastChecked.toLocaleTimeString()}`
                     : 'Not checked yet'}
@@ -90,7 +77,7 @@ export default function HealthCheckPage() {
 
             {error && (
               <div className="mt-3 p-3 bg-white rounded border border-red-300">
-                <p className="text-sm text-red-700">
+                <p className="text-xs sm:text-sm text-red-700">
                   <strong>Error:</strong> {error}
                 </p>
               </div>
@@ -99,17 +86,17 @@ export default function HealthCheckPage() {
             {health && !error && (
               <div className="mt-3 space-y-2">
                 {health.message && (
-                  <div className="text-sm text-gray-700">
+                  <div className="text-xs sm:text-sm text-gray-700">
                     <strong>Message:</strong> {health.message}
                   </div>
                 )}
                 {health.timestamp && (
-                  <div className="text-sm text-gray-700">
+                  <div className="text-xs sm:text-sm text-gray-700">
                     <strong>Server Time:</strong> {new Date(health.timestamp).toLocaleString()}
                   </div>
                 )}
                 {health.uptime !== undefined && (
-                  <div className="text-sm text-gray-700">
+                  <div className="text-xs sm:text-sm text-gray-700">
                     <strong>Uptime:</strong> {Math.floor(health.uptime / 60)} minutes
                   </div>
                 )}
@@ -117,10 +104,9 @@ export default function HealthCheckPage() {
             )}
           </div>
 
-          {/* Info Section */}
-          <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded">
-            <h3 className="font-semibold text-blue-900 mb-2">API Endpoint</h3>
-            <p className="text-sm text-blue-800 font-mono">
+          <div className="mt-6 p-3 sm:p-4 bg-blue-50 border border-blue-200 rounded">
+            <h3 className="font-semibold text-blue-900 mb-2 text-sm sm:text-base">API Endpoint</h3>
+            <p className="text-xs sm:text-sm text-blue-800 font-mono break-all">
               {import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080'}/healthz
             </p>
           </div>

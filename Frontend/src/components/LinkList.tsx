@@ -1,4 +1,3 @@
-import React from "react";
 import type { LinkItem } from "../pages/DashboardPage";
 
 type Props = {
@@ -21,10 +20,10 @@ export default function LinkList({ links, onDelete, onViewStats }: Props) {
       {links?.map((l) => (
         <div
           key={l.code}
-          className="flex items-center justify-between gap-4 border rounded-lg p-4 bg-white hover:shadow-md transition"
+          className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 border rounded-lg p-4 bg-white hover:shadow-md transition"
         >
           <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-3 mb-2">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-2">
               <a
                 className="font-mono text-sm font-semibold text-blue-600 hover:text-blue-800 underline"
                 href={`/r/${l.code}`}
@@ -39,18 +38,18 @@ export default function LinkList({ links, onDelete, onViewStats }: Props) {
               </div>
             </div>
 
-            <div className="flex items-center gap-4 text-xs text-gray-500">
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs text-gray-500">
               <span>{l.clicks} clicks</span>
               <span>{new Date(l.createdAt).toLocaleDateString()}</span>
               {l.lastClickedAt && (
-                <span>
+                <span className="hidden sm:inline">
                   Last: {new Date(l.lastClickedAt).toLocaleString()}
                 </span>
               )}
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 self-end sm:self-auto">
             <button
               className="px-3 py-1.5 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 text-sm font-medium transition"
               onClick={() => onViewStats(l.code)}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getLinks, createLink, deleteLink } from '../api';
 import LinkForm from '../components/LinkForm';
@@ -69,37 +69,35 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gray-50 p-4 sm:p-6">
       <div className="max-w-4xl mx-auto">
-        <div className="bg-white shadow rounded p-6">
-          <h1 className="text-2xl font-semibold mb-2">Dashboard</h1>
-          <p className="text-sm text-gray-600 mb-6">
+        <div className="bg-white shadow rounded p-4 sm:p-6">
+          <h1 className="text-xl sm:text-2xl font-semibold mb-2">Dashboard</h1>
+          <p className="text-xs sm:text-sm text-gray-600 mb-6">
             Create, manage, and track your shortened URLs
           </p>
 
-          {/* Link Creation Form */}
-          <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded">
-            <h2 className="text-lg font-medium mb-3">Create New Link</h2>
+          <div className="mb-6 p-3 sm:p-4 bg-blue-50 border border-blue-200 rounded">
+            <h2 className="text-base sm:text-lg font-medium mb-3">Create New Link</h2>
             <LinkForm onCreate={handleCreate} />
           </div>
 
-          {/* Links List */}
           <div className="mt-6">
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-lg font-medium">Your Links</h2>
+              <h2 className="text-base sm:text-lg font-medium">Your Links</h2>
               {totalCount > 0 && (
-                <span className="text-sm text-gray-600 bg-gray-100 px-3 py-1 rounded-full">
+                <span className="text-xs sm:text-sm text-gray-600 bg-gray-100 px-2 sm:px-3 py-1 rounded-full">
                   Total: {totalCount}
                 </span>
               )}
             </div>
             {loading && (
-              <div className="text-center py-8 text-gray-600">
+              <div className="text-center py-8 text-gray-600 text-sm sm:text-base">
                 Loading links...
               </div>
             )}
             {error && (
-              <div className="p-4 bg-red-50 border border-red-200 rounded text-red-700 mb-4">
+              <div className="p-3 sm:p-4 bg-red-50 border border-red-200 rounded text-red-700 mb-4 text-sm">
                 {error}
               </div>
             )}

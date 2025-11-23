@@ -20,11 +20,11 @@ export default function LinkForm({ onCreate }: Props) {
     setLoading(true);
     try {
       const created = await onCreate(target.trim(), code.trim() || undefined);
-      setMsg(`✅ Created: ${created.code}`);
+      setMsg(`Created: ${created.code}`);
       setTarget('');
       setCode('');
     } catch (err: any) {
-      setMsg(`❌ ${err?.message ?? 'Create failed'}`);
+      setMsg(`${err?.message ?? 'Create failed'}`);
     } finally {
       setLoading(false);
     }

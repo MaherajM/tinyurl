@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import linkService from '../services/linkService';
 
 class LinkController {
-  // Create a new short link
   async createShortLink(req: Request, res: Response): Promise<void> {
     try {
       const { code, target } = req.body;
@@ -13,7 +12,6 @@ class LinkController {
         return;
       }
 
-      // Validate URL format
       if (!linkService.isValidUrl(target)) {
         res.status(400).json({ error: 'Invalid target URL format' });
         return;
@@ -41,7 +39,6 @@ class LinkController {
     }
   }
 
-  // Redirect to target URL and track click
   async redirectToTarget(req: Request, res: Response): Promise<void> {
     try {
       const { code } = req.params;
@@ -53,8 +50,6 @@ class LinkController {
         return;
       }
 
-      // Return target URL in JSON response with 200 status
-      // Frontend will handle the actual redirection
       res.status(200).json({
         success: true,
         target: link.target,
@@ -66,7 +61,6 @@ class LinkController {
     }
   }
 
-  // Get link statistics
   async getLinkStats(req: Request, res: Response): Promise<void> {
     try {
       const { code } = req.params;
@@ -91,7 +85,6 @@ class LinkController {
     }
   }
 
-  // Update a link
   async updateLink(req: Request, res: Response): Promise<void> {
     try {
       const { code } = req.params;
@@ -102,7 +95,6 @@ class LinkController {
         return;
       }
 
-      // Validate URL format
       if (!linkService.isValidUrl(target)) {
         res.status(400).json({ error: 'Invalid target URL format' });
         return;
@@ -129,7 +121,6 @@ class LinkController {
     }
   }
 
-  // Delete a link
   async deleteLink(req: Request, res: Response): Promise<void> {
     try {
       const { code } = req.params;
@@ -148,7 +139,6 @@ class LinkController {
     }
   }
 
-  // Get all links (optional - for admin)
   async getAllLinks(req: Request, res: Response): Promise<void> {
     try {
       const limit = parseInt(req.query.limit as string) || 100;

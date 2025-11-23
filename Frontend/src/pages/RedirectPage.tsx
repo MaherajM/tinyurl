@@ -2,16 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getRedirectTarget } from "../api";
 
-/**
- * RedirectPage - Handles short link redirects
- *
- * Flow:
- * 1. Calls backend API to get redirect URL
- * 2. If found: Redirects to target URL (increments click count)
- * 3. If not found: Shows error message with option to go to dashboard
- *
- * Route: /r/:code or /:code
- */
 export default function RedirectPage() {
   const { code } = useParams<{ code: string }>();
   const navigate = useNavigate();
@@ -19,7 +9,6 @@ export default function RedirectPage() {
   const [error, setError] = useState<string | null>(null);
   const [redirectUrl, setRedirectUrl] = useState<string | null>(null);
 
-  // Use ref to track if redirect has been attempted
   const hasRedirected = useRef(false);
 
   useEffect(() => {
@@ -29,26 +18,22 @@ export default function RedirectPage() {
       return;
     }
 
-    // Prevent duplicate executions (React Strict Mode causes double render in dev)
     if (hasRedirected.current) {
       console.log("Redirect already attempted, skipping...");
       return;
     }
 
     const performRedirect = async () => {
-      // Mark as redirected before making API call
       hasRedirected.current = true;
 
       try {
         console.log("Checking link with code:", code);
 
-        // Call API to get target URL - increments click count ONCE
         const targetUrl = await getRedirectTarget(code);
 
         console.log("Link found, redirecting to:", targetUrl);
         setRedirectUrl(targetUrl);
 
-        // Redirect to target URL
         window.location.href = targetUrl;
       } catch (err: any) {
         console.error("Redirect error:", err);
@@ -60,7 +45,6 @@ export default function RedirectPage() {
     performRedirect();
   }, [code]);
 
-  // Loading state
   if (loading && !error) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center p-6">
@@ -82,7 +66,6 @@ export default function RedirectPage() {
     );
   }
 
-  // Error state
   if (error) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
@@ -117,7 +100,6 @@ export default function RedirectPage() {
             </button>
           </div>
 
-          {/* Error details for debugging */}
           <div className="mt-6 p-3 bg-red-50 border border-red-200 rounded text-left">
             <p className="text-xs text-red-700">
               <strong>Error:</strong> {error}
