@@ -42,7 +42,7 @@ export class LinkService {
     if (!link) {
       return null;
     }
-
+    console.log("Incrementing clicks for code:", code);
     link.clicks += 1;
     link.lastClickedAt = new Date();
     await link.save();

@@ -16,7 +16,7 @@ function createServer() {
 
       app.get('/healthz', (req: Request, res: Response) => {
         res.send({
-          status: 'Alive',
+          status: 'healthy',
           timestamp: new Date().toISOString(),
           message: 'Server is healthy',
         });
