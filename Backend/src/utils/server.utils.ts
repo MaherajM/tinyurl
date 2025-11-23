@@ -4,16 +4,15 @@ import bodyParser from 'body-parser';
 import logger from '../lib/logger';
 import routes from '../routes/index';
 
-function createServer() {
+function createServer(): Promise<Express> {
   return new Promise<Express>((resolve, reject) => {
     try {
       const app: Express = express();
-
-      app.use(cors({ credentials: true, origin: '*' }));
-
+      
+      app.use(cors({ origin: '*' }));
       app.use(bodyParser.urlencoded({ extended: true }));
       app.use(bodyParser.json());
-
+      
       app.get('/healthz', (req: Request, res: Response) => {
         res.send({
           status: 'healthy',
@@ -21,9 +20,9 @@ function createServer() {
           message: 'Server is healthy',
         });
       });
-
+      
       app.use('/api', routes);
-
+      
       logger.info('Express server created successfully');
       resolve(app);
     } catch (error) {
@@ -32,4 +31,5 @@ function createServer() {
     }
   });
 }
+
 export { createServer };
