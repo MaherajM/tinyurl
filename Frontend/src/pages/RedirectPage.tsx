@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { getRedirectTarget } from "../api";
 
 /**
  * RedirectPage - Handles short link redirects
@@ -18,6 +19,9 @@ export default function RedirectPage() {
   const [error, setError] = useState<string | null>(null);
   const [redirectUrl, setRedirectUrl] = useState<string | null>(null);
 
+  // Use ref to track if redirect has been attempted
+  const hasRedirected = useRef(false);
+
   useEffect(() => {
     if (!code) {
       setError("No short code provided");
@@ -25,56 +29,27 @@ export default function RedirectPage() {
       return;
     }
 
+    // Prevent duplicate executions (React Strict Mode causes double render in dev)
+    if (hasRedirected.current) {
+      console.log("Redirect already attempted, skipping...");
+      return;
+    }
+
     const performRedirect = async () => {
-      setLoading(true);
-      setError(null);
+      // Mark as redirected before making API call
+      hasRedirected.current = true;
 
       try {
-        const BASE =
-          import.meta.env.VITE_API_BASE_URL ?? "http://localhost:5000";
-        console.log("Redirecting using base URL:", BASE);
+        console.log("Checking link with code:", code);
 
-        const response = await fetch(`${BASE}/api/links/redirect/${code}`, {
-          method: "GET",
-          redirect: "manual", // Don't auto-follow redirects
-        });
+        // Call API to get target URL - increments click count ONCE
+        const targetUrl = await getRedirectTarget(code);
 
-        if (
-          response.type === "opaqueredirect" ||
-          response.status === 302 ||
-          response.status === 301
-        ) {
-          // Backend is redirecting - get the location header
-          const location = response.headers.get("Location");
-          if (location) {
-            setRedirectUrl(location);
-            setTimeout(() => {
-              window.location.href = location;
-            }, 500);
-            return;
-          }
-        }
+        console.log("Link found, redirecting to:", targetUrl);
+        setRedirectUrl(targetUrl);
 
-        // Handle JSON response (alternative approach)
-        if (response.ok) {
-          const data = await response.json();
-          if (data.target || data.url) {
-            const targetUrl = data.target || data.url;
-            setRedirectUrl(targetUrl);
-            setTimeout(() => {
-              window.location.href = targetUrl;
-            }, 500);
-            return;
-          }
-        }
-
-        // If we get here, the link wasn't found
-        if (response.status === 404) {
-          setError("Short link not found");
-        } else {
-          setError("Failed to redirect");
-        }
-        setLoading(false);
+        // Redirect to target URL
+        window.location.href = targetUrl;
       } catch (err: any) {
         console.error("Redirect error:", err);
         setError(err?.message ?? "Failed to load redirect URL");

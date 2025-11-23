@@ -53,7 +53,13 @@ class LinkController {
         return;
       }
 
-      res.redirect(301, link.target);
+      // Return target URL in JSON response with 200 status
+      // Frontend will handle the actual redirection
+      res.status(200).json({
+        success: true,
+        target: link.target,
+        code: link.code
+      });
     } catch (error) {
       console.error('Error redirecting:', error);
       res.status(500).json({ error: 'Internal server error' });
