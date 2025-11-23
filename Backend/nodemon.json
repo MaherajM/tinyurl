@@ -1,5 +1,0 @@
-{
-  "watch": ["src"],
-  "ext": "ts",
-  "exec": "npm run build:cjs && ts-node ./dest/cjs/server.js"
-}

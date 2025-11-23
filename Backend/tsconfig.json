@@ -4,20 +4,17 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "target": "es6",
+    "target": "es2020",
     "noImplicitAny": true,
     "moduleResolution": "node",
-    "sourceMap": true,
+    "sourceMap": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "resolveJsonModule": true,
     "outDir": "./dest",
     "baseUrl": ".",
     "lib": [
-      "es2018",
-      "dom",
-      "es5",
-      "es6"
+      "es2020"
     ],
     "ignoreDeprecations": "5.0"
   },
