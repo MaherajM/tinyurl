@@ -16,6 +16,9 @@ router.get('/', linkController.getAllLinks);
 // Get link statistics
 router.get('/:code', linkController.getLinkStats);
 
+// Update a link
+router.put('/:code', linkController.updateLink);
+
 // Redirect to target URL (this should be one of the last routes)
 router.get('/redirect/:code', linkController.redirectToTarget);
 

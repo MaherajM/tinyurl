@@ -85,6 +85,44 @@ class LinkController {
     }
   }
 
+  // Update a link
+  async updateLink(req: Request, res: Response): Promise<void> {
+    try {
+      const { code } = req.params;
+      const { target } = req.body;
+
+      if (!target) {
+        res.status(400).json({ error: 'Target URL is required' });
+        return;
+      }
+
+      // Validate URL format
+      if (!linkService.isValidUrl(target)) {
+        res.status(400).json({ error: 'Invalid target URL format' });
+        return;
+      }
+
+      const link = await linkService.updateLink(code, target);
+
+      if (!link) {
+        res.status(404).json({ error: 'Link not found' });
+        return;
+      }
+
+      res.json({
+        code: link.code,
+        target: link.target,
+        clicks: link.clicks,
+        createdAt: link.createdAt,
+        lastClickedAt: link.lastClickedAt,
+        message: 'Link updated successfully'
+      });
+    } catch (error) {
+      console.error('Error updating link:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  }
+
   // Delete a link
   async deleteLink(req: Request, res: Response): Promise<void> {
     try {

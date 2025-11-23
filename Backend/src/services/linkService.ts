@@ -55,6 +55,20 @@ export class LinkService {
     return await Link.findOne({ code });
   }
 
+  // Update link
+  async updateLink(code: string, target: string): Promise<ILink | null> {
+    const link = await Link.findOne({ code });
+
+    if (!link) {
+      return null;
+    }
+
+    link.target = target;
+    await link.save();
+
+    return link;
+  }
+
   // Delete link
   async deleteLink(code: string): Promise<boolean> {
     const result = await Link.findOneAndDelete({ code });
